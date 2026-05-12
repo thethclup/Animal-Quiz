@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap');
+
+@theme {
+  --color-bg: #050505;
+  --color-ink: #ffffff;
+  --color-accent: #f27d26;
+  --color-accent-soft: rgba(242, 125, 38, 0.2);
+  --color-glass: rgba(255, 255, 255, 0.05);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography styles */
+.text-display {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.text-micro {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* UI Elements */
+.pill-button {
+  border: 1px solid var(--color-glass-border);
+  border-radius: 100px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--color-glass);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.pill-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.pill-button.accent {
+  background: var(--color-accent);
+  color: var(--color-bg);
+  border-color: var(--color-accent);
+}
+
+.pill-button.accent:hover {
+  background: #ff8e3e;
+  box-shadow: 0 0 20px var(--color-accent-soft);
+}
+
+.glass-card {
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+}
+
+/* Game animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px) rotate(-2deg); }
+  75% { transform: translateX(5px) rotate(2deg); }
+}
+
+.animate-shake {
+  animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* Custom Scrollbar for dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
