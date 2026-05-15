@@ -1,20 +1,42 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Animal Quiz
 
-# Run and deploy your AI Studio app
+Animal Quiz is a fun, beautiful, and educational animal trivia game. Test and improve your knowledge of the animal kingdom with fast-paced, visually stunning questions.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/bc2ecec2-648b-45bb-af9a-eb21585ffef3
+- **Mobile First Design**: Quick-tap trivia format optimized for touch screens.
+- **Multiple Game Modes**: Classic, Blitz, Endless, Daily Challenges.
+- **On-Chain Architecture**: 
+  - On-chain High Scores and Longest Streaks using SIWE signatures.
+  - ERC-8021 Transaction Attribution
+  - ERC-8004 Trustless Agents Integration
+  - "Say GM" simple on-chain transaction button
+- **Educational Elements**: Detailed "Did You Know?" fun facts on answer interactions.
+- **Agent Integrations**: Built-in endpoints for A2A communication (`/api/agent`) and MCP workflows (`/api/mcp`).
 
-## Run Locally
-
-**Prerequisites:**  Node.js
-
+## Setup
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+```bash
+npm install
+```
+
+2. Start the development server (includes Vite SPA and API endpoints):
+```bash
+npm run dev
+```
+
+3. Build for production:
+```bash
+npm run build
+```
+
+4. Start production server:
+```bash
+npm run start
+```
+
+## Smart Contract Integration
+Animal Quiz connects predominantly to **Base Mainnet**. Wagmi/Viem handles transactions, wallet signatures, and integration hooks. The orchestrator is configured for safe trustless interactions using the ERC-8004 agent standard.
+
+*Note: Sensitive configuration values (like API keys) should be stored in your `.env` file based on `.env.example`.*
