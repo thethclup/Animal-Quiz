@@ -1,42 +1,53 @@
-# Animal Quiz
+# Animal Quiz / Orchestrator
 
-Animal Quiz is a fun, beautiful, and educational animal trivia game. Test and improve your knowledge of the animal kingdom with fast-paced, visually stunning questions.
+Animal Quiz is an educational animal trivia setup and AI Orchestrator providing high-performance capabilities. It connects testing wildlife knowledge with real-time optimization, orchestration logic, and adaptive game loops.
 
 ## Features
 
-- **Mobile First Design**: Quick-tap trivia format optimized for touch screens.
-- **Multiple Game Modes**: Classic, Blitz, Endless, Daily Challenges.
-- **On-Chain Architecture**: 
-  - On-chain High Scores and Longest Streaks using SIWE signatures.
-  - ERC-8021 Transaction Attribution
-  - ERC-8004 Trustless Agents Integration
-  - "Say GM" simple on-chain transaction button
-- **Educational Elements**: Detailed "Did You Know?" fun facts on answer interactions.
-- **Agent Integrations**: Built-in endpoints for A2A communication (`/api/agent`) and MCP workflows (`/api/mcp`).
+- **Multi-Question Orchestration**: Evaluate answers, verify facts, and string together sessions dynamically.
+- **Animal Knowledge Testing**: Validate wildlife facts interactively.
+- **Adaptive Quizzing**: Responsive design to challenge the player properly.
+- **Educational Value**: Build knowledge via engaging data.
+- **A2A / ERC-8004 Architecture**: Fully compliant Trustless Agent layout capable of connecting with external orchestrators via well-known schemas.
+- **MCP Endpoint**: Readout tools, resources, and endpoints automatically.
 
-## Setup
+## AI Agent & Model Context Protocol (MCP)
 
-1. Install dependencies:
+This project fully supports MCP integration. By hooking into `/api/mcp`, downstream services or Agentic frameworks can execute various tasks on the system.
+
+### Exploring the Built-in Tools
+
+Currently, the orchestration environment exposes the following tool proxies for external clients via the standard MCP HTTP endpoint format (Next.js App Router API):
+
+- `get_race_status`
+- `start_race`
+- `get_leaderboard`
+- `optimize_speed`
+- `get_track_info`
+
+Send a `POST` to `/api/mcp` with `{ "action": "tools/list" }` or `{ "action": "tools/call", "params": { "name": "get_race_status" } }` to interface directly with the agent orchestration.
+
+## Setup & Local Development
+
+This application features modern React tooling natively.
+
+1. **Install dependencies**:
 ```bash
 npm install
 ```
 
-2. Start the development server (includes Vite SPA and API endpoints):
+2. **Start the development server**:
 ```bash
 npm run dev
 ```
 
-3. Build for production:
+3. **Build and Serve for Production**:
 ```bash
 npm run build
-```
-
-4. Start production server:
-```bash
 npm run start
 ```
 
-## Smart Contract Integration
-Animal Quiz connects predominantly to **Base Mainnet**. Wagmi/Viem handles transactions, wallet signatures, and integration hooks. The orchestrator is configured for safe trustless interactions using the ERC-8004 agent standard.
+## Agent Registration Info
 
-*Note: Sensitive configuration values (like API keys) should be stored in your `.env` file based on `.env.example`.*
+The Agent card is automatically hosted at `/.well-known/agent-card.json`.
+It exposes standard definitions under `eip155:8453` and enables A2A (Agent-to-Agent) discovery, making it plug-and-play for Base/Agent integrations.
