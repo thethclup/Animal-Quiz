@@ -4,9 +4,26 @@
   "version": "1.0.0",
   "type": "https://eips.ethereum.org/EIPS/eip-8004#registration-v1",
   "image": "https://animalquiz-pi.vercel.app/logo.png",
-  "wallets": {
-    "base": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6"
-  },
+  "owner": "[PLACEHOLDER_OWNER_WALLET]",
+  "agentWallet": "0xe157F1F5e12adB38Ba013683E9Ce24efe21e5bA6",
+  "active": true,
+  "skills": [
+    {
+      "id": "animal-knowledge-testing",
+      "name": "Animal Knowledge Testing",
+      "description": "Evaluates wildlife knowledge interactively."
+    },
+    {
+      "id": "quiz-generation",
+      "name": "Quiz Generation",
+      "description": "Dynamically generate and serve daily or category quizzes."
+    },
+    {
+      "id": "adaptive-quizzing",
+      "name": "Adaptive Quizzing",
+      "description": "Adjust scoring multipliers and game pacing dynamically."
+    }
+  ],
   "services": [
     {
       "name": "A2A",
@@ -34,6 +51,12 @@
     "mcp-command-execution"
   ],
   "supportedChains": ["eip155:8453"],
-  "active": true,
-  "status": "online"
+  "x402Support": false,
+  "registrations": [
+    {
+      "agentId": null,
+      "agentRegistry": "eip155:8453:0x8004A169FB4a3325136EB29fA0ceB6D2e539a432"
+    }
+  ],
+  "supportedTrust": ["reputation"]
 }
