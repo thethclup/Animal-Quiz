@@ -29,14 +29,18 @@ async function startServer() {
       name: "Animal Quiz MCP Endpoint",
       status: "active",
       description: "Active MCP server for Animal Quiz Orchestrator",
-      capabilities: ["animal-knowledge-testing", "quiz-generation", "adaptive-quizzing"],
+      capabilities: {
+        tools: {},
+        prompts: {},
+        resources: {}
+      },
       timestamp: new Date().toISOString(),
       tools: [
-        { name: "get_race_status", description: "Get status of current race" },
-        { name: "start_race", description: "Start a new race" },
-        { name: "get_leaderboard", description: "Returns the global leaderboard" },
-        { name: "optimize_speed", description: "Optimize simulation speed" },
-        { name: "get_track_info", description: "Get details about the racing track" }
+        { name: "get_quiz_status", description: "Get status of current quiz", inputSchema: { type: "object", properties: {} } },
+        { name: "start_quiz", description: "Start a new animal quiz", inputSchema: { type: "object", properties: {} } },
+        { name: "get_leaderboard", description: "Returns the global leaderboard", inputSchema: { type: "object", properties: {} } },
+        { name: "submit_answer", description: "Submit an answer to a question", inputSchema: { type: "object", properties: { answer: { type: "string" } } } },
+        { name: "get_animal_fact", description: "Get a random animal fact", inputSchema: { type: "object", properties: {} } }
       ],
       prompts: [],
       resources: []
@@ -46,8 +50,47 @@ async function startServer() {
   app.post('/api/mcp', (req, res) => {
     try {
       const body = req.body;
-      const { action, command, params, task } = body;
-      const cmd = (action || command || task || "").toLowerCase();
+      
+      // JSON-RPC MCP Support
+      if (body.method === 'tools/list') {
+        return res.json({
+          jsonrpc: "2.0",
+          id: body.id,
+          result: {
+            tools: [
+              { name: "get_quiz_status", description: "Get status of current quiz", inputSchema: { type: "object", properties: {} } },
+              { name: "start_quiz", description: "Start a new animal quiz", inputSchema: { type: "object", properties: {} } },
+              { name: "get_leaderboard", description: "Returns the global leaderboard", inputSchema: { type: "object", properties: {} } },
+              { name: "submit_answer", description: "Submit an answer to a question", inputSchema: { type: "object", properties: { answer: { type: "string" } } } },
+              { name: "get_animal_fact", description: "Get a random animal fact", inputSchema: { type: "object", properties: {} } }
+            ]
+          }
+        });
+      }
+      if (body.method === 'prompts/list') {
+        return res.json({ jsonrpc: "2.0", id: body.id, result: { prompts: [] } });
+      }
+      if (body.method === 'resources/list') {
+        return res.json({ jsonrpc: "2.0", id: body.id, result: { resources: [] } });
+      }
+
+      const action = body.action || body.command || body.task || body.method || "";
+      const cmd = action.toLowerCase();
+
+      // Legacy format support
+      if (cmd === "tools/list" || cmd === "list_tools") {
+        return res.json({
+          tools: [
+            { name: "get_quiz_status", description: "Get status of current quiz", inputSchema: { type: "object", properties: {} } },
+            { name: "start_quiz", description: "Start a new animal quiz", inputSchema: { type: "object", properties: {} } },
+            { name: "get_leaderboard", description: "Returns the global leaderboard", inputSchema: { type: "object", properties: {} } },
+            { name: "submit_answer", description: "Submit an answer to a question", inputSchema: { type: "object", properties: { answer: { type: "string" } } } },
+            { name: "get_animal_fact", description: "Get a random animal fact", inputSchema: { type: "object", properties: {} } }
+          ],
+          prompts: [],
+          resources: []
+        });
+      }
 
       let result: any = {};
 
@@ -79,24 +122,9 @@ async function startServer() {
           };
           break;
 
-        case "tools/list":
-        case "list_tools":
-          result = {
-            tools: [
-              { name: "get_race_status", description: "Get status of current race" },
-              { name: "start_race", description: "Start a new race" },
-              { name: "get_leaderboard", description: "Returns the global leaderboard" },
-              { name: "optimize_speed", description: "Optimize simulation speed" },
-              { name: "get_track_info", description: "Get details about the racing track" }
-            ],
-            prompts: [],
-            resources: []
-          };
-          break;
-
         case "tools/call":
         case "call_tool":
-          const toolName = params?.name || command;
+          const toolName = body.params?.name || body.command;
           result = {
             success: true,
             message: `Tool ${toolName} executed successfully`,

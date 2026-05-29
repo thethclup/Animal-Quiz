@@ -19,13 +19,13 @@ This project fully supports MCP integration. By hooking into `/api/mcp`, downstr
 
 Currently, the orchestration environment exposes the following tool proxies for external clients via the standard MCP HTTP endpoint format (Next.js App Router API):
 
-- `get_race_status`
-- `start_race`
+- `get_quiz_status`
+- `start_quiz`
 - `get_leaderboard`
-- `optimize_speed`
-- `get_track_info`
+- `submit_answer`
+- `get_animal_fact`
 
-Send a `POST` to `/api/mcp` with `{ "action": "tools/list" }` or `{ "action": "tools/call", "params": { "name": "get_race_status" } }` to interface directly with the agent orchestration.
+Send a `POST` to `/api/mcp` with `{ "action": "tools/list" }` or `{ "jsonrpc": "2.0", "method": "tools/list" }` to interface directly with the agent orchestration.
 
 ## Setup & Local Development
 
