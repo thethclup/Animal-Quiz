@@ -1,4 +1,4 @@
-export type Category = 'Mammals' | 'Birds' | 'Ocean Life' | 'Reptiles' | 'Mythical';
+export type Category = 'Mammals' | 'Birds' | 'Ocean Life' | 'Reptiles' | 'Mythical' | 'Insects';
 
 export interface Question {
   id: string;
@@ -64,6 +64,42 @@ export const questions: Question[] = [
     correctIndex: 2,
     explanation: "The Phoenix is a legendary bird in Greek mythology that periodically dies in a show of flames and combustion, then reborn from the ashes.",
     imageUrl: "https://images.unsplash.com/photo-1520114815152-32b000a65349?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: "q_i_1",
+    category: "Insects",
+    text: "How many eyes does a bee have?",
+    options: ["2", "3", "5", "8"],
+    correctIndex: 2,
+    explanation: "Bees have 5 eyes: 2 large compound eyes and 3 smaller ocelli in the center of their head, used for light navigation.",
+    imageUrl: "https://images.unsplash.com/photo-1560271790-2bd1da483c6b?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: "q_m_3",
+    category: "Mammals",
+    text: "Which mammal does not possess vocal cords?",
+    options: ["Sloth", "Giraffe", "Hippopotamus", "Kangaroo"],
+    correctIndex: 1,
+    explanation: "Giraffes do not have true vocal cords, but they can still make sounds like snorts or grunts, and communicate in infrasound.",
+    imageUrl: "https://images.unsplash.com/photo-1534567059667-cbbf22a27549?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: "q_o_2",
+    category: "Ocean Life",
+    text: "Which fish species relies on male pregnancy where males carry the eggs?",
+    options: ["Clownfish", "Seahorse", "Cuttlefish", "Pufferfish"],
+    correctIndex: 1,
+    explanation: "Male seahorses carry eggs deposited by females in a specialized brood pouch until they hatch.",
+    imageUrl: "https://images.unsplash.com/photo-1508216172675-52dc5e320d70?auto=format&fit=crop&q=80&w=800",
+  },
+  {
+    id: "q_b_2",
+    category: "Birds",
+    text: "What is a group of flamingos called?",
+    options: ["A flock", "A stand", "A flamboyance", "A dazzle"],
+    correctIndex: 2,
+    explanation: "Given their vibrant pink coloration and striking poses, a group of flamingos is wonderfully called a flamboyance.",
+    imageUrl: "https://images.unsplash.com/photo-1582294157147-38d7454bbaff?auto=format&fit=crop&q=80&w=800",
   }
 ];
 

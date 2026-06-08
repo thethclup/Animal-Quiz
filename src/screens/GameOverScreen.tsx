@@ -1,17 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount } from 'wagmi';
+import { useAccount, useSendTransaction } from 'wagmi';
 import { motion } from 'motion/react';
 import { useGame } from '../lib/GameContext';
 import { submitScoreOnChain } from '../lib/siwe';
 import { triggerTrustlessAgentEvent } from '../lib/erc8004';
 import { logAttributedAction } from '../lib/erc8021';
-import { Award, Share2, Home } from 'lucide-react';
+import { Award, Share2, Home, Sun } from 'lucide-react';
+import { parseEther } from 'viem';
 
 export default function GameOverScreen() {
   const navigate = useNavigate();
   const { score, resetGame } = useGame();
   const { address, isConnected } = useAccount();
+  const { sendTransaction } = useSendTransaction();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -48,6 +50,19 @@ export default function GameOverScreen() {
     navigate('/');
   };
 
+  const handleSayGM = () => {
+    if (!isConnected) return alert('Please connect wallet first.');
+    logAttributedAction('say_gm_onchain_gameover');
+    sendTransaction({
+      to: '0xc35B9997B63B1CE14f8F513f7eddD9a7ABbB33d7',
+      value: parseEther('0'),
+      data: '0x' 
+    }, {
+      onSuccess: () => alert('GM Said on-chain!'),
+      onError: (e) => console.error('Transaction rejected', e)
+    });
+  };
+
   return (
     <div className="flex-1 flex flex-col items-center justify-center p-6 relative">
       <motion.div 
@@ -76,6 +91,14 @@ export default function GameOverScreen() {
 
         <div className="space-y-4">
           <button 
+            onClick={handleSayGM}
+            className="w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all bg-[#E8A020]/20 hover:bg-[#E8A020]/30 border border-[#E8A020]/40 text-[#E8A020]"
+          >
+            <Sun className="w-5 h-5 mr-2" />
+            Say GM
+          </button>
+
+          <button 
             onClick={handleRecordScore}
             disabled={isSubmitting || submitted}
             className={`w-full py-4 rounded-xl font-semibold flex items-center justify-center transition-all ${
@@ -85,7 +108,7 @@ export default function GameOverScreen() {
           >
             {isSubmitting ? 'Signing in Wallet...' : 
              submitted ? 'Score Secured On-Chain ✓' : 
-             'Record Record On-chain'}
+             'Record This Quiz on-chain'}
           </button>
           
           <div className="flex space-x-4">

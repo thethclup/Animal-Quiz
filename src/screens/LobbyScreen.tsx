@@ -27,12 +27,11 @@ export default function LobbyScreen() {
 
   const handleSayGM = () => {
     if (!isConnected) return alert('Please connect wallet first.');
-    // Simulated simple on-chain GM transaction sending 0 value to a 0-address or just triggering a TX
     logAttributedAction('say_gm_onchain');
     sendTransaction({
-      to: '0x0000000000000000000000000000000000000000', // Burn address for simple GM demo
+      to: '0xc35B9997B63B1CE14f8F513f7eddD9a7ABbB33d7',
       value: parseEther('0'),
-      data: '0x' // In a real app we might encode "GM" here
+      data: '0x' 
     }, {
       onSuccess: () => alert('GM Said on-chain!'),
       onError: (e) => console.log('Transaction rejected', e)

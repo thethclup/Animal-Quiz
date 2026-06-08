@@ -107,7 +107,7 @@ async function startServer() {
         case "execute":
           result = {
             success: true,
-            executed: params || command,
+            executed: body.params || body.command,
             executedAt: new Date().toISOString(),
             message: "Quiz command processed successfully"
           };
