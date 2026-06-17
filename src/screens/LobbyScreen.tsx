@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount, useConnect, useDisconnect, useSendTransaction } from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 import { motion } from 'motion/react';
 import { Play } from 'lucide-react';
 import { useGame } from '../lib/GameContext';
 import { getRandomQuestions } from '../data/questions';
 import { logAttributedAction } from '../lib/erc8021';
-import { parseEther } from 'viem';
+import { useSayGM } from '../hooks/useSayGM';
 
 export default function LobbyScreen() {
   const navigate = useNavigate();
   const { address, isConnected } = useAccount();
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
-  const { sendTransaction } = useSendTransaction();
+  
+  const { handleSayGM, isPending } = useSayGM();
   
   const { resetGame, setQuestions, setGameMode } = useGame();
 
@@ -25,17 +26,8 @@ export default function LobbyScreen() {
     navigate('/play');
   };
 
-  const handleSayGM = () => {
-    if (!isConnected) return alert('Please connect wallet first.');
-    logAttributedAction('say_gm_onchain');
-    sendTransaction({
-      to: '0xc35B9997B63B1CE14f8F513f7eddD9a7ABbB33d7',
-      value: parseEther('0'),
-      data: '0x' 
-    }, {
-      onSuccess: () => alert('GM Said on-chain!'),
-      onError: (e) => console.log('Transaction rejected', e)
-    });
+  const handleSayGMClick = () => {
+    handleSayGM('say_gm_onchain');
   };
 
   return (
@@ -97,10 +89,11 @@ export default function LobbyScreen() {
                 <button onClick={() => disconnect()} className="text-xs text-gray-500 hover:text-white">Disconnect</button>
               </div>
               <button 
-                onClick={handleSayGM}
-                className="pill-button accent w-full text-sm font-semibold tracking-wide"
+                onClick={handleSayGMClick}
+                disabled={isPending}
+                className="pill-button accent w-full text-sm font-semibold tracking-wide disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Say "GM" On-Chain
+                {isPending ? 'Confirming...' : 'Say "GM" On-Chain'}
               </button>
             </div>
           )}

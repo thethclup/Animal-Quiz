@@ -1,19 +1,19 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAccount, useSendTransaction } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { motion } from 'motion/react';
 import { useGame } from '../lib/GameContext';
 import { submitScoreOnChain } from '../lib/siwe';
 import { triggerTrustlessAgentEvent } from '../lib/erc8004';
 import { logAttributedAction } from '../lib/erc8021';
 import { Award, Share2, Home, Sun } from 'lucide-react';
-import { parseEther } from 'viem';
+import { useSayGM } from '../hooks/useSayGM';
 
 export default function GameOverScreen() {
   const navigate = useNavigate();
   const { score, resetGame } = useGame();
   const { address, isConnected } = useAccount();
-  const { sendTransaction } = useSendTransaction();
+  const { handleSayGM, isPending } = useSayGM();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -50,17 +50,8 @@ export default function GameOverScreen() {
     navigate('/');
   };
 
-  const handleSayGM = () => {
-    if (!isConnected) return alert('Please connect wallet first.');
-    logAttributedAction('say_gm_onchain_gameover');
-    sendTransaction({
-      to: '0xc35B9997B63B1CE14f8F513f7eddD9a7ABbB33d7',
-      value: parseEther('0'),
-      data: '0x' 
-    }, {
-      onSuccess: () => alert('GM Said on-chain!'),
-      onError: (e) => console.error('Transaction rejected', e)
-    });
+  const handleSayGMClick = () => {
+    handleSayGM('say_gm_onchain_gameover');
   };
 
   return (
@@ -91,11 +82,12 @@ export default function GameOverScreen() {
 
         <div className="space-y-4">
           <button 
-            onClick={handleSayGM}
-            className="w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all bg-[#E8A020]/20 hover:bg-[#E8A020]/30 border border-[#E8A020]/40 text-[#E8A020]"
+            onClick={handleSayGMClick}
+            disabled={isPending}
+            className="w-full py-4 rounded-xl font-bold flex items-center justify-center transition-all bg-[#E8A020]/20 hover:bg-[#E8A020]/30 border border-[#E8A020]/40 text-[#E8A020] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Sun className="w-5 h-5 mr-2" />
-            Say GM
+            {isPending ? 'Confirming...' : 'Say GM'}
           </button>
 
           <button 

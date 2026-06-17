@@ -3,26 +3,16 @@ import { GameProvider } from './lib/GameContext';
 import LobbyScreen from './screens/LobbyScreen';
 import QuizArenaScreen from './screens/QuizArenaScreen';
 import GameOverScreen from './screens/GameOverScreen';
-import { useAccount, useSendTransaction } from 'wagmi';
-import { parseEther } from 'viem';
+import { useAccount } from 'wagmi';
 import { Sun } from 'lucide-react';
-import { logAttributedAction } from './lib/erc8021';
+import { useSayGM } from './hooks/useSayGM';
 
 function GlobalGMButton() {
   const { isConnected } = useAccount();
-  const { sendTransaction } = useSendTransaction();
+  const { handleSayGM, isPending } = useSayGM();
 
   const sendGMTransaction = () => {
-    if (!isConnected) return alert('Please connect wallet first.');
-    logAttributedAction('say_gm_onchain_global');
-    sendTransaction({
-      to: '0xc35B9997B63B1CE14f8F513f7eddD9a7ABbB33d7',
-      value: parseEther('0'),
-      data: '0x' 
-    }, {
-      onSuccess: () => alert('GM Said on-chain!'),
-      onError: (e) => console.error('Transaction rejected', e)
-    });
+    handleSayGM('say_gm_onchain_global');
   };
 
   if (!isConnected) return null;
@@ -31,10 +21,11 @@ function GlobalGMButton() {
     <div className="absolute top-4 right-4 z-50">
       <button 
         onClick={sendGMTransaction}
-        className="px-3 py-2 rounded-lg bg-[#E8A020]/20 hover:bg-[#E8A020]/30 border border-[#E8A020]/40 text-[#E8A020] transition-colors flex items-center gap-2 font-['Cinzel'] text-xs font-bold"
+        disabled={isPending}
+        className="px-3 py-2 rounded-lg bg-[#E8A020]/20 hover:bg-[#E8A020]/30 border border-[#E8A020]/40 text-[#E8A020] transition-colors flex items-center gap-2 font-['Cinzel'] text-xs font-bold disabled:opacity-50"
       >
         <Sun className="w-4 h-4" />
-        Say GM
+        {isPending ? 'Confirming...' : 'Say GM'}
       </button>
     </div>
   );
